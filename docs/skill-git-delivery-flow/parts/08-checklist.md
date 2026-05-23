@@ -9,6 +9,7 @@
 - [ ] issue criada via `gh` quando não havia issue adequada
 - [ ] preferências salvas em `.context/git-preferences.json`
 - [ ] branch de trabalho usada e fora de `main`, `homolog` e `staging`
+- [ ] branch de trabalho criada da base correta (`staging` para feature/bugfix e `main` para hotfix)
 - [ ] branch criada como worktree (padrão) ou exceção justificada
 - [ ] diretório do worktree informado no chat
 - [ ] usuário navegou para o diretório correto (quando worktree)
@@ -22,6 +23,8 @@
 - [ ] sincronização remota validada antes do push
 - [ ] confirmação explícita recebida antes do push
 - [ ] PR formal criado para `homolog` quando a etapa exigir validação integrada
+- [ ] quando branch nasceu de `staging`, alinhamento `staging`/`homolog` validado antes do PR da feature para `homolog`
+- [ ] PR formal `staging` -> `homolog` criado quando alinhamento de base foi necessário
 - [ ] validação em `homolog` concluída antes de promover para `staging`
 - [ ] aprovação explícita do desenvolvedor recebida antes de promover para `staging`
 - [ ] aprovação do desenvolvedor registrada em comentário na issue ou nas issues relacionadas
@@ -32,6 +35,7 @@
 - [ ] PR vinculado à issue (`Closes #...`) quando aplicável
 - [ ] PR não foi fechado via CLI fora da exceção de release autorizada
 - [ ] merge apenas após aprovação explícita
+- [ ] quando houver stacked branch, dependência registrada no PR (`Depends on #<PR-A>`) e na issue
 - [ ] worktree removida após merge do PR (quando aplicável)
 - [ ] `git worktree prune` executado quando solicitado
 - [ ] auditoria preenchida com link da issue (ou justificativa)
