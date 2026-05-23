@@ -1,0 +1,22 @@
+{
+  "commitStyle": "conventional",
+  "language": "pt-BR",
+  "canonicalBranches": {
+    "main": "main",
+    "homolog": "homolog",
+    "staging": "staging"
+  },
+  "baseBranches": {
+    "feature": "main",
+    "bugfix": "main",
+    "hotfix": "main"
+  },
+  "projectPatterns": {
+    "commitStyleDetected": "conventional",
+    "branchNamingDetected": "segmented",
+    "issueIdUsage": "optional-auto"
+  },
+  "promotionFlow": ["homolog", "staging", "main"],
+  "discoveryCompleted": true,
+  "updatedAt": "2026-05-23T12:35:00.000Z"
+}
