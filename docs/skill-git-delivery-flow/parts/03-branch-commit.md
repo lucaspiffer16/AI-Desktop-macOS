@@ -27,10 +27,10 @@ Regras:
 
 Regras fixas deste fluxo:
 
-- `feature/*` nasce de `main`
-- `bugfix/*` nasce de `main`
+- `feature/*` nasce de `staging`
+- `bugfix/*` nasce de `staging`
 - `hotfix/*` nasce de `main`
-- `refactor/*`, `chore/*`, `docs/*`, `test/*`, `build/*` e `ci/*` nascem de `main`
+- `refactor/*`, `chore/*`, `docs/*`, `test/*`, `build/*` e `ci/*` nascem de `staging` (exceto hotfix)
 
 ## Criação de branch como worktree (PADRÃO)
 
@@ -41,10 +41,10 @@ Toda branch de trabalho é criada como worktree em diretório separado.
 1. Confirmar tipo, issue ou issues e contexto
 2. Gerar nome da branch segmentada
 3. Gerar path do worktree: `../<tipo>-<ids-opcional>-<contexto>`
-4. Criar worktree a partir de `main`:
+4. Criar worktree a partir da branch-base correta (`staging` para feature/bugfix/refactor/chore/docs/test/build/ci; `main` para hotfix):
 
 ```bash
-git worktree add -b <tipo>/<ids-opcional>/<contexto> ../<tipo>-<ids-opcional>-<contexto> main
+git worktree add -b <tipo>/<ids-opcional>/<contexto> ../<tipo>-<ids-opcional>-<contexto> <base-branch>
 ```
 
 5. Informar caminho do worktree no chat
@@ -58,7 +58,7 @@ git worktree add -b <tipo>/<ids-opcional>/<contexto> ../<tipo>-<ids-opcional>-<c
 git worktree list
 
 # Criar worktree com nova branch
-git worktree add -b <branch> ../<path> main
+git worktree add -b <branch> ../<path> <base-branch>
 
 # Criar worktree para branch existente
 git worktree add ../<path> <branch-existente>
@@ -76,12 +76,40 @@ git worktree prune
 - nome do diretório = `<tipo>-<ids-opcional>-<contexto>` (sem `/`, kebab-case)
 - ao finalizar entrega, remover worktree após merge do PR
 
+## Gate de alinhamento para PR em homolog com base staging
+
+Se a branch de trabalho nasceu de `staging` e o PR alvo for `homolog`:
+
+- validar divergência entre `origin/homolog` e `origin/staging`
+- se houver desalinhamento relevante, sincronizar formalmente `staging` -> `homolog` antes de abrir o PR da feature
+
+Comandos de referência:
+
+```bash
+git fetch
+git rev-list --left-right --count origin/homolog...origin/staging
+git diff --name-status origin/homolog...HEAD
+```
+
+Regra:
+
+- sem alinhamento de base, bloquear criação de PR da feature para `homolog`
+
+## Política de stacked branches
+
+Quando houver dependência entre features não formalizadas:
+
+- permitir criação de `feature/B` a partir de `feature/A`
+- registrar no PR de `feature/B`: `Depends on #<PR-A>`
+- registrar dependência na issue de `feature/B`
+- após merge de `feature/A`, rebasear `feature/B` para a base-alvo vigente antes da promoção
+
 ### Exceção: branch temporária ou rápida
 
 Se o usuário quiser apenas algo rápido (ex.: ver um arquivo, ajuste pequeno), permitir criar branch normal sem worktree mediante confirmação explícita.
 
 ```bash
-git switch main
+git switch <base-branch>
 git switch -c <tipo>/<ids-opcional>/<contexto>
 ```
 

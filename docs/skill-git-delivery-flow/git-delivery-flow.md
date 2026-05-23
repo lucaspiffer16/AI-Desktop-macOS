@@ -62,11 +62,16 @@ Ordem recomendada de leitura:
 
 Regras:
 
-- `feature/*` nasce de `main`
-- `bugfix/*` nasce de `main`
+- `feature/*` nasce de `staging`
+- `bugfix/*` nasce de `staging`
 - `hotfix/*` nasce de `main`
 - `staging` recebe somente features e bugfixes aprovados
 - `main` recebe somente release vinda de `staging` ou `hotfix` aprovado
+
+Regra de segurança para homologação com base em `staging`:
+
+- se uma `feature/*` ou `bugfix/*` nascer de `staging` e o PR alvo for `homolog`, validar antes que `homolog` está sincronizada com o mesmo ponto-base de `staging`
+- quando `homolog` não estiver alinhada, executar sincronização formal (`staging` -> `homolog`) antes de abrir PR da feature
 
 ## Modelo canônico de promoção
 
@@ -76,6 +81,23 @@ Fluxo esperado:
 2. após aprovação explícita do desenvolvedor, a mesma branch -> `staging`
 3. `staging` -> `main` no fluxo de release
 4. `hotfix/*` -> `main`, com sincronização posterior para `staging` e `homolog`
+
+Fluxo alternativo quando a base operacional for `staging`:
+
+1. `feature/*` ou `bugfix/*` nasce de `staging`
+2. antes de PR para `homolog`, garantir alinhamento `homolog`/`staging`
+3. PR da feature para `homolog` (homologação)
+4. após aprovação explícita, PR da mesma branch para `staging`
+5. `staging` -> `main` no fluxo de release
+
+## Política de stacked branches
+
+Quando uma feature depender de outra ainda não formalizada:
+
+- permitir `feature/B` nascer de `feature/A`
+- registrar dependência explícita no PR (`Depends on #<PR-A>`)
+- registrar dependência na issue da `feature/B`
+- após merge de `feature/A`, rebasear `feature/B` para a base-alvo vigente antes da promoção
 
 ## Modelo canônico de worktree
 
@@ -103,8 +125,8 @@ Formato:
     "staging": "staging"
   },
   "baseBranches": {
-    "feature": "main",
-    "bugfix": "main",
+    "feature": "staging",
+    "bugfix": "staging",
     "hotfix": "main"
   },
   "projectPatterns": {

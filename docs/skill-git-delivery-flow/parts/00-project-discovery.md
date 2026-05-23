@@ -48,8 +48,8 @@ Persistir em `.context/git-preferences.json`:
 - `commitStyle`
 - `language`
 - `canonicalBranches` (`main`, `homolog`, `staging`)
-- `baseBranches.feature = main`
-- `baseBranches.bugfix = main`
+- `baseBranches.feature = staging`
+- `baseBranches.bugfix = staging`
 - `baseBranches.hotfix = main`
 - `projectPatterns` (padrões detectados)
 - `promotionFlow = ["homolog", "staging", "main"]`
