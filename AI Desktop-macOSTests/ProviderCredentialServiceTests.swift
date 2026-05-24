@@ -26,8 +26,9 @@ struct ProviderCredentialServiceTests {
         switch result {
         case .success:
             Issue.record("Expected read failure")
-        case .failure(let message):
-            #expect(message == "No credential found for this provider reference.")
+        case .failure(let error):
+            #expect(error == .itemNotFound)
+            #expect(error.message == "No credential found for this provider reference.")
         }
     }
 }
