@@ -9,12 +9,25 @@ import SwiftUI
 
 struct ContentView: View {
     private let connectivityService = OpenAIProviderConnectivityService(client: OpenAIProviderClient())
+    private let streamingService = MockConversationStreamingService()
 
     var body: some View {
         NavigationStack {
-            ProviderManagementView(
-                viewModel: ProviderManagementViewModel(connectivityValidator: connectivityService)
-            )
+            TabView {
+                ProviderManagementView(
+                    viewModel: ProviderManagementViewModel(connectivityValidator: connectivityService)
+                )
+                .tabItem {
+                    Label("Providers", systemImage: "link")
+                }
+
+                ConversationView(
+                    viewModel: ConversationViewModel(streamingService: streamingService)
+                )
+                .tabItem {
+                    Label("Conversation", systemImage: "bubble.left.and.bubble.right")
+                }
+            }
         }
     }
 }
