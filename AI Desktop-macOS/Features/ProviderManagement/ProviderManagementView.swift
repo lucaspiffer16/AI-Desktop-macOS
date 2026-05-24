@@ -11,8 +11,6 @@ struct ProviderManagementView: View {
         Form {
             Section("Provider Setup") {
                 TextField("Base URL", text: $viewModel.baseURLText)
-                    .textInputAutocapitalization(.never)
-                    .autocorrectionDisabled()
 
                 SecureField("API Key", text: $viewModel.apiKey)
 
